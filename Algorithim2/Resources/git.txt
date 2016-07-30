@@ -1,0 +1,6 @@
+ope git bash
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/killer2020/abcd.git
+git push -u origin master
