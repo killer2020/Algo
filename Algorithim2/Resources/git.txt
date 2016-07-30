@@ -4,3 +4,11 @@ git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/killer2020/abcd.git
 git push -u origin master
+
+----
+next time in same directory
+
+----
+git add README.md
+git commit -m "something"
+git push -u origin master
