@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Acyclicity {
-	static int order=0;
+	static int order=0b;
     private static int acyclic(ArrayList<Integer>[] adj,ArrayList<Integer>[] reverseAdj) {
         
     int[] postOrder=new int[adj.length];
@@ -37,7 +37,7 @@ public class Acyclicity {
 		 
 		for(int i=0;i<adj.length;i++)
 		{
-			bfs(adj,i,visited,postOrder);
+			dfs(adj,i,visited,postOrder);
 			
 		}
     	
@@ -46,13 +46,13 @@ public class Acyclicity {
 
 
 
-	private static void bfs(ArrayList<Integer>[] adj, int i, boolean[] visited,int[] postOrder) {
+	private static void dfs(ArrayList<Integer>[] adj, int i, boolean[] visited,int[] postOrder) {
 		if(visited[i]==true)
 			return;
 		visited[i]=true;
 		for(Integer neighbour:adj[i])
 		{   
-			bfs(adj,neighbour,visited,postOrder);
+			dfs(adj,neighbour,visited,postOrder);
 		}
 		postOrder[order]=i;
 		order=order+1;
