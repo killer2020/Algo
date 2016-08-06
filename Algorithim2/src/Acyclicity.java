@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Acyclicity {
-	static int order=0b;
+	static int order=0;
     private static int acyclic(ArrayList<Integer>[] adj,ArrayList<Integer>[] reverseAdj) {
         
     int[] postOrder=new int[adj.length];
