@@ -8,20 +8,20 @@ public class NegativeCycle {
     	
     	for(int i=0;i<distance.length;i++)
     	{
-    		distance[i]=0;
+    		distance[i]=1000001;
     	}
     	
     	int source=0;
-    	for(int k=0;k<adj.length;k++)
-    	{
-    		if(adj[k].size()>0)
-    		{	source=k;
-    		    break;
-    		}
-    		return 0;
-    	}
+//    	for(int k=0;k<adj.length;k++)
+//    	{
+//    		if(adj[k].size()>0)
+//    		{	source=k;
+//    		    break;
+//    		}
+//    		return 0;
+//    	}
     	
-    //	distance[source]=0;
+    	distance[source]=0;
     	
     	for(int j=0;j<adj.length;j++)
     	{   
@@ -54,21 +54,27 @@ public class NegativeCycle {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         int m = scanner.nextInt();
-        ArrayList<Integer>[] adj = (ArrayList<Integer>[])new ArrayList[n];
-        ArrayList<Integer>[] cost = (ArrayList<Integer>[])new ArrayList[n];
-        for (int i = 0; i < n; i++) {
+        ArrayList<Integer>[] adj = (ArrayList<Integer>[])new ArrayList[n+1];
+        ArrayList<Integer>[] cost = (ArrayList<Integer>[])new ArrayList[n+1];
+        for (int i = 0; i < n+1; i++) {
             adj[i] = new ArrayList<Integer>();
             cost[i] = new ArrayList<Integer>();
         }
+        
+        for(int j=0;j<n;j++)
+        {
+        	adj[0].add(j+1);
+        	cost[0].add(0);
+        }
+        
         for (int i = 0; i < m; i++) {
             int x, y, w;
             x = scanner.nextInt();
             y = scanner.nextInt();
             w = scanner.nextInt();
-            adj[x - 1].add(y - 1);
-            cost[x - 1].add(w);
+            adj[x].add(y);
+            cost[x].add(w);
         }
         System.out.println(negativeCycle(adj, cost));
     }
 }
-
