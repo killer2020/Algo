@@ -93,5 +93,5 @@ Now it takes a certificate from renowned agency like ("Govt of India" or in real
 So that it is in control of everything like security from this intermediate organisation.
 And client or chrome browser will trust it as they trust godaddy and trust chain is established.
 
-
+Here Govt of India is root CA and other are intermediate CAs.
 
