@@ -81,4 +81,17 @@ and client can check if this chain eventually leads to "trusted entity" in "trus
 Or when you login from your browser to yourbankaccount.com browser has "TRUSTSTORE" with trusted entities 
 and yourbankaccount.com sends certificate chain to your browser.
 
+---------------------------------------------------------------------------------
+
+
+Why do we need chain of certificates?
+
+There are many reasons one of the reasons is in large organisation
+You have a certificate authority which issues all certificates and doesnt always go to "Govt of India" everytime it needs new certificate
+for its new application.
+Now it takes a certificate from renowned agency like ("Govt of India" or in real world "godaddy") to itself and then further issues certificates.
+So that it is in control of everything like security from this intermediate organisation.
+And client or chrome browser will trust it as they trust godaddy and trust chain is established.
+
+
 
