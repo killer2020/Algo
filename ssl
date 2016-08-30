@@ -1,0 +1,37 @@
+SSL Communication
+
+Difference between keystore and trust store.
+
+You are going to buy a fire extinguisher for you house,you are worried that someone can sell you
+risky product and you say that I am going to buy only fire extinguisher which are approved by below organisation
+
+(FDI corp,ABC corp and Govt of India)
+
+Here you are "client" and the above three corporations are your "truststore", you trust them.
+
+
+
+You go to shop he presents you a fire extinguisher verified by these organisations->(TMG corp,DEF corp).
+You check if any of this is present in you "trust store".
+No!!!! cant trust!!! you reject it.
+
+Here shop is "Server" and (TMG corp,DEF corp) is there "keystore".
+
+You go to another shop they give you fire extinguisher signed by (ABC corp and ZZZ corp).
+You check this in your "truststore"----!!!!! Match (ABC corp) !!!  SSL communication established
+
+And you buy that fire extinguisher as you know "ABC Corp" is renowned organisation and anything verified/signed by them is trustworthy.
+
+
+
+This is very basic of how SSL communication is established.
+
+Server has a "keystore" with certificates signed by some organisations.
+
+Client has "truststore" with its own trusted certificates.
+
+Client tries to connect to Server.
+
+Server present its certificates and client check if certificates match its certificate in its trust store.
+
+If yes match!!!! SSL communication is established. 
