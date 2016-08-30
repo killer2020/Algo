@@ -95,3 +95,11 @@ And client or chrome browser will trust it as they trust godaddy and trust chain
 
 Here Govt of India is root CA and other are intermediate CAs.
 
+--------------------------------------------------------------------------------
+
+Now you know there would be intermediate CA which will generate certificates for some or all server applications
+for you organisation+ their will be certificate chain from intermediate CA to "goDaddy CA" at server side.
+and all people of your organisation will have godaddy as trusted CA in there chrome browser(check in settings).
+When the will hit server url in there browser, cert chain will be presented from server to client browser
+and communication will be established.
+
