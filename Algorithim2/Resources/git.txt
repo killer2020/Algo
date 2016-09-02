@@ -12,3 +12,6 @@ next time in same directory
 git add README.md
 git commit -m "something"
 git push -u origin master
+
+
+https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
