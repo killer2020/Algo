@@ -6,6 +6,9 @@ import java.util.*;
 
 public class TrieMatching implements Runnable {
 	
+	
+	final char patternMatchCharacter='$';
+	
 	 class Node{
 	    	char data;
 	    	ArrayList<Node> childs=new ArrayList<Node>();
@@ -62,7 +65,7 @@ public class TrieMatching implements Runnable {
 				
 			}
 			
-			currentNode.childs.add(new Node('$'));
+			currentNode.childs.add(new Node(patternMatchCharacter));
 			
 		}
 	
@@ -94,7 +97,7 @@ public class TrieMatching implements Runnable {
 		
 		for(int i=0;i<text.length();i++)
 		{
-			if(currentNode.contains('$')!=null)
+			if(currentNode.contains(patternMatchCharacter)!=null)
 				return true;
 			
 			char character=text.charAt(i);
@@ -106,7 +109,7 @@ public class TrieMatching implements Runnable {
 				
 		}
 		
-		if(currentNode.contains('$')!=null) //checking last node,as we have added $ at all leaves
+		if(currentNode.contains(patternMatchCharacter)!=null) //checking last node,as we have added $ at all leaves
 			return true;
 		return false;
 	}
