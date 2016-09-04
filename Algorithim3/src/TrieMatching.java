@@ -1,38 +1,114 @@
 import java.io.*;
 import java.util.*;
 
-class Node
-{
-	public static final int Letters =  4;
-	public static final int NA      = -1;
-	public int next [];
 
-	Node ()
-	{
-		next = new int [Letters];
-		Arrays.fill (next, NA);
-	}
-}
+
 
 public class TrieMatching implements Runnable {
-	int letterToIndex (char letter)
-	{
-		switch (letter)
-		{
-			case 'A': return 0;
-			case 'C': return 1;
-			case 'G': return 2;
-			case 'T': return 3;
-			default: assert (false); return Node.NA;
-		}
-	}
+	
+	 class Node{
+	    	char data;
+	    	ArrayList<Node> childs=new ArrayList<Node>();
+	    	
+	    	public Node(char data)
+	    	{
+	    		this.data=data;
+	    	}
 
+			public Node contains(char character)
+			{
+				for(Node child:childs)
+				{
+					if(child.data==character)
+						return child;
+				}
+				return null;
+			}
+	    }
+
+	    
+	    private Node buildTrie(List<String> patterns) {
+
+	        Node root=new Node('R');
+	        
+	        for(String pattern:patterns)
+	        {
+	        	updateTree(root,pattern);
+	        }
+
+	        return root;
+	    }
+
+	    private void updateTree(Node root, String pattern)
+		{
+			Node currentNode=root;
+			
+			for(int i=0;i<pattern.length();i++)
+			{
+				char character=pattern.charAt(i);
+				
+				Node found=currentNode.contains(character);
+				
+				if(found!=null)
+	             {
+		           currentNode=found;
+	             }
+	             else
+	             {
+	            	 Node newNode=new Node(character);
+	            	 currentNode.childs.add(newNode);
+	            	 currentNode=newNode;
+	             }
+				
+			}
+			
+			currentNode.childs.add(new Node('$'));
+			
+		}
+	
+	
+	
+	    
 	List <Integer> solve (String text, int n, List <String> patterns) {
 		List <Integer> result = new ArrayList <Integer> ();
 
-		// write your code here
+		Node trieRootNode=buildTrie(patterns);
+		
+		boolean patternMatchatIndex=false;
+		int textLength=text.length();
+		for(int i=0;i<textLength;i++)
+		{
+			patternMatchatIndex=checkForPattern(text,trieRootNode,result);
+			if(patternMatchatIndex==true)
+				result.add(i);
+			text=text.substring(1,text.length());
+		}
+		
 
 		return result;
+	}
+
+	private boolean checkForPattern(String text, Node trieRootNode, List<Integer> result)
+	{
+		Node currentNode=trieRootNode;
+		
+		for(int i=0;i<text.length();i++)
+		{
+			if(currentNode.contains('$')!=null)
+				return true;
+			
+			char character=text.charAt(i);
+			Node found=currentNode.contains(character);
+			if(found!=null)
+				currentNode=found;
+			else
+				return false;
+				
+		}
+		
+		if(currentNode.contains('$')!=null) //checking last node,as we have added $ at all leaves
+			return true;
+		return false;
 	}
 
 	public void run () {
