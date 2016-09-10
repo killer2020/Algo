@@ -24,7 +24,7 @@ public class Trie {
     }
 
     
-    class Node{
+   class Node{
     	int node;
     	char data;
     	ArrayList<Node> childs=new ArrayList<Node>();
