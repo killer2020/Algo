@@ -76,7 +76,27 @@ public class SuffixArrayLong {
 
     private int[] updateClasses(int[] sortCharacter, int[] charClasses, int l)
 	{
-		// TODO Auto-generated method stub
+    	int[] count=new int[charClasses.length];
+    	for(int i=0;i<charClasses.length;i++)
+    	{
+    		count[charClasses[i]]=count[charClasses[i]]+1;
+    	}
+    	
+    	for(int i=1;i<count.length;i++)
+    	{
+    		count[i]=count[i]+count[i-1];
+    	}
+    	
+    	
+		for(int i=sortCharacter.length-1;i>=0;i--)
+		{
+			int num=(sortCharacter[i]-l+sortCharacter.length)%sortCharacter.length;
+			
+			
+			
+		}
+    	
+    	
 		return null;
 	}
 
