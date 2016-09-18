@@ -47,39 +47,54 @@ public class SuffixArrayLong {
     public int[] computeSuffixArray(String text) {
         int[] result = new int[text.length()];
 
-        int[] sortCharacter=sortCharacters(text);
-        int[] charClasses=computeCharClasses(sortCharacter,text);
-      
-        
-        
-       
-        
-        
+        int[] order=sortCharacters(text);
+        int[] charClasses=computeCharClasses(order,text);
+
         int l=1;
-        
-       
-        
-        
+
         while(l<text.length())
         {
-        	sortCharacter=sortDoubled(text,l,sortCharacter,charClasses);
-        	charClasses=updateClasses(sortCharacter,charClasses,l);
+        	order=sortDoubled(text,l,order,charClasses);
+        	charClasses=updateClasses(order,charClasses,l);
         	l=2*l;
         } 
         
-        
-        // write your code here
 
-        return sortCharacter;
+        return order;
     }
 
 
-    private int[] updateClasses(int[] sortCharacter, int[] charClasses, int l)
+    private int[] updateClasses(int[] order, int[] charClasses, int l)
 	{
+    	int totalLength=order.length;
+    	int[] newClass=new int[totalLength];
+
+    		
+    	newClass[order[0]]=0;
     	
+    	int prevClass1=charClasses[order[0]];
+    	int prevClass2=charClasses[order[(0+totalLength+l)%totalLength]];
     	
+    	for(int i=1;i<totalLength;i++)
+    	{
+    		int newClass1=charClasses[order[i]];
+    		int newClass2=charClasses[(order[i]+totalLength+l)%totalLength];
+    		
+    		if(prevClass1==newClass1 && prevClass2==newClass2)
+    		{
+    			newClass[order[i]]=newClass[order[i-1]];
+    		}
+    		else
+    		{
+    			newClass[order[i]]=newClass[order[i-1]]+1;
+    		}
+    		
+    		prevClass1=newClass1;
+    		prevClass2=newClass2;
+    		
+    	}
     	
-		return null;
+		return newClass;
 	}
 
 
