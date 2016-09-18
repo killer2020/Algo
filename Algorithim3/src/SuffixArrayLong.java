@@ -51,32 +51,42 @@ public class SuffixArrayLong {
         int[] charClasses=computeCharClasses(sortCharacter,text);
       
         
-        for(int i:charClasses)
-        {
-        	System.out.println(i);
-        }
+        
        
         
         
         int l=1;
+        
+       
+        
         
         while(l<text.length())
         {
         	sortCharacter=sortDoubled(text,l,sortCharacter,charClasses);
         	charClasses=updateClasses(sortCharacter,charClasses,l);
         	l=2*l;
-        }
+        } 
         
         
         // write your code here
 
-        return result;
+        return sortCharacter;
     }
 
 
     private int[] updateClasses(int[] sortCharacter, int[] charClasses, int l)
 	{
-    	int[] count=new int[charClasses.length];
+    	
+    	
+    	
+		return null;
+	}
+
+
+	private int[] sortDoubled(String text, int l, int[] sortCharacter, int[] charClasses)
+	{
+		int[] count=new int[charClasses.length];
+		int[] newOrder=new int[text.length()];
     	for(int i=0;i<charClasses.length;i++)
     	{
     		count[charClasses[i]]=count[charClasses[i]]+1;
@@ -91,20 +101,12 @@ public class SuffixArrayLong {
 		for(int i=sortCharacter.length-1;i>=0;i--)
 		{
 			int num=(sortCharacter[i]-l+sortCharacter.length)%sortCharacter.length;
-			
-			
-			
+			int charClass=charClasses[num];
+			count[charClass]=count[charClass]-1;
+			newOrder[count[charClass]]=num;
 		}
-    	
-    	
-		return null;
-	}
-
-
-	private int[] sortDoubled(String text, int l, int[] sortCharacter, int[] charClasses)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		return newOrder;
+	
 	}
 
 
