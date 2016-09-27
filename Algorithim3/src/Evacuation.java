@@ -10,90 +10,78 @@ public class Evacuation {
     public static void main(String[] args) throws IOException {
         in = new FastScanner();
 
-        FlowGraph graph = readGraph();
-        System.out.println(maxFlow(graph, 0, graph.size() - 1));
+        
+        Graph graph = new Graph();
+        Graph residualGraph= new Graph();
+        readGraph(graph,residualGraph);
+        
+        System.out.println(maxFlow(graph,residualGraph));
     }
 
-    private static int maxFlow(FlowGraph graph, int from, int to) {
+    private static int maxFlow(Graph graph,Graph reverseGraph) {
         int flow = 0;
         /* your code goes here */
         return flow;
     }
 
-    static FlowGraph readGraph() throws IOException {
+    static void readGraph(Graph graph, Graph residualGraph) throws IOException {
         int vertex_count = in.nextInt();
         int edge_count = in.nextInt();
-        FlowGraph graph = new FlowGraph(vertex_count);
 
+        for(int i=0;i<vertex_count;i++)
+        {
+        	graph.nodes.add(new Node(i));
+        	residualGraph.nodes.add(new Node(i));
+        }
+        
+        
         for (int i = 0; i < edge_count; ++i) {
             int from = in.nextInt() - 1, to = in.nextInt() - 1, capacity = in.nextInt();
-            graph.addEdge(from, to, capacity);
+            graph.addEdge(from, to, capacity,0);
+            residualGraph.addEdge(from,to, 0,capacity);
         }
-        return graph;
     }
 
     static class Edge {
-        int from, to, capacity, flow;
 
-        public Edge(int from, int to, int capacity) {
-            this.from = from;
+        int to;
+    	int capacity, flow;
+
+        public Edge(int to, int capacity,int flow) {
             this.to = to;
             this.capacity = capacity;
-            this.flow = 0;
+            this.flow = flow;
+        }
+        
+        
+        public void addFlow(int flow)
+        {
+        	this.flow=flow;
         }
     }
 
-    /* This class implements a bit unusual scheme to store the graph edges, in order
-     * to retrieve the backward edge for a given edge quickly. */
-    static class FlowGraph {
-        /* List of all - forward and backward - edges */
-        private List<Edge> edges;
-
-        /* These adjacency lists store only indices of edges from the edges list */
-        private List<Integer>[] graph;
-
-        public FlowGraph(int n) {
-            this.graph = (ArrayList<Integer>[])new ArrayList[n];
-            for (int i = 0; i < n; ++i)
-                this.graph[i] = new ArrayList<>();
-            this.edges = new ArrayList<>();
-        }
-
-        public void addEdge(int from, int to, int capacity) {
-            /* Note that we first append a forward edge and then a backward edge,
-             * so all forward edges are stored at even indices (starting from 0),
-             * whereas backward edges are stored at odd indices. */
-            Edge forwardEdge = new Edge(from, to, capacity);
-            Edge backwardEdge = new Edge(to, from, 0);
-            graph[from].add(edges.size());
-            edges.add(forwardEdge);
-            graph[to].add(edges.size());
-            edges.add(backwardEdge);
-        }
-
-        public int size() {
-            return graph.length;
-        }
-
-        public List<Integer> getIds(int from) {
-            return graph[from];
-        }
-
-        public Edge getEdge(int id) {
-            return edges.get(id);
-        }
-
-        public void addFlow(int id, int flow) {
-            /* To get a backward edge for a true forward edge (i.e id is even), we should get id + 1
-             * due to the described above scheme. On the other hand, when we have to get a "backward"
-             * edge for a backward edge (i.e. get a forward edge for backward - id is odd), id - 1
-             * should be taken.
-             *
-             * It turns out that id ^ 1 works for both cases. Think this through! */
-            edges.get(id).flow += flow;
-            edges.get(id ^ 1).flow -= flow;
+    
+    static class Node
+    {
+    	int nodeNumber;
+        ArrayList<Edge> edges=new ArrayList<Edge>();    	
+    	
+        public Node(int nodeNumber)
+        {
+        	this.nodeNumber=nodeNumber;
         }
     }
+    
+    static class Graph
+    {
+    	ArrayList<Node> nodes=new ArrayList<Node>();
+    	
+    	public void addEdge(int from,int to,int capacity,int flow)
+    	{
+    		nodes.get(from).edges.add(new Edge(to,capacity,flow));
+    	}
+    }
+    
 
     static class FastScanner {
         private BufferedReader reader;
