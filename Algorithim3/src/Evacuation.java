@@ -19,7 +19,12 @@ public class Evacuation {
         
         
         System.out.println(maxFlow(graph,residualGraph));
-        System.out.println(residualGraph.nodes.get(residualGraph.nodes.size()-1).parentNode+1);
+        
+        int parent=residualGraph.nodes.get(residualGraph.nodes.size()-1).parentNode;
+        while(parent!=0)
+        {System.out.println(parent+1);
+         parent=residualGraph.nodes.get(parent).parentNode;
+        }
     }
 
     private static int maxFlow(Graph graph,Graph residualGraph) {
