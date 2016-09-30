@@ -14,11 +14,7 @@ public class Evacuation {
     public static void main(String[] args) throws IOException {
         in = new FastScanner();
 
-        
-
         readGraph(graph,residualGraph);
-        
-        
         
         System.out.println(maxFlow(graph,residualGraph));
 
@@ -27,28 +23,54 @@ public class Evacuation {
 
     private static int maxFlow(Graph graph,Graph residualGraph) {
         int flow = 0;
-        boolean pathFound;
-        
+        boolean pathFound=false;
+        int minFlow=0;
         Node root=residualGraph.nodes.get(0);
         int target=residualGraph.nodes.size()-1;
         
         pathFound=findPath(root,target,false);
         
+        while(pathFound)
+        {
+        	 minFlow=findMinFlow(residualGraph);
+             
+             addFlow(minFlow,graph,residualGraph);
+        	
+             resetVisitedFlag();
+        	 pathFound=findPath(root,target,false);
+        }
         
-        int minFlow=findMinFlow(residualGraph);
-        
-        addFlow(minFlow,graph,residualGraph);
+       
         
         
         System.out.println("MinFlow:"+minFlow);
         System.out.println(pathFound);
         
+        Node startFlow=graph.nodes.get(0);
+       
+        for(Edge edge:startFlow.edges)
+           flow=flow+edge.flow;
+        
         return flow;
     }
 
-    private static void addFlow(int minFlow, Graph graph, Graph residualGraph)
+    private static void resetVisitedFlag()
 	{
+		for(Node node:residualGraph.nodes)
+			node.visited=false;
 		
+	}
+
+	private static void addFlow(int minFlow, Graph graph, Graph residualGraph)
+	{
+		for(int i=0;i<path.size()-1;i++)
+		{
+			int from=path.get(i);
+			int to=path.get(i+1);
+			graph.newFlow(from, to, minFlow);
+			residualGraph.newFlow(from, to, -minFlow);
+			residualGraph.newFlow(to,from, minFlow);
+		}
 		
 	}
     
@@ -201,13 +223,16 @@ public class Evacuation {
 		{
 			
 			Node fromNode=nodes.get(from);
-			Edge newEdge=new Edge(from,to,flow);
+			
 			for(Edge edge:fromNode.edges)
 			{
 				if(edge.to==to)
+				{	flow=flow+edge.flow;
 					nodes.remove(edge);
+				
+				}
 			}
-			
+			Edge newEdge=new Edge(from,to,flow);
 			fromNode.edges.add(newEdge);
 		}
 		
