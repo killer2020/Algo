@@ -1,9 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Evacuation {
     private static FastScanner in;
@@ -18,7 +20,7 @@ public class Evacuation {
         
         System.out.println(maxFlow(graph,residualGraph));
 
-         System.out.println(path);
+         //System.out.println(path);
     }
 
     private static int maxFlow(Graph graph,Graph residualGraph) {
@@ -43,13 +45,13 @@ public class Evacuation {
        
         
         
-        System.out.println("MinFlow:"+minFlow);
-        System.out.println(pathFound);
+       // System.out.println("MinFlow:"+minFlow);
+       // System.out.println(pathFound);
         
         Node startFlow=graph.nodes.get(0);
        
-        for(Edge edge:startFlow.edges)
-           flow=flow+edge.flow;
+        for(Map.Entry<Integer,Edge> edge:startFlow.edges.entrySet())
+           flow=flow+edge.getValue().flow;
         
         return flow;
     }
@@ -115,16 +117,16 @@ public class Evacuation {
     		return true;
     	
     	root.visited=true;
-    	for(Edge edge:root.edges)
+    	for(Map.Entry<Integer,Edge> edge:root.edges.entrySet())
     	{
-    		if(edge.flow<=0 || residualGraph.nodes.get(edge.to).visited)
+    		if(edge.getValue().flow<=0 || residualGraph.nodes.get(edge.getKey()).visited)
     			continue;
-    		residualGraph.nodes.get(edge.to).parentNode=root.nodeNumber;
-    		if(edge.to==target)
+    		residualGraph.nodes.get(edge.getKey()).parentNode=root.nodeNumber;
+    		if(edge.getKey()==target)
     			return true;
     		else
     		{	
-    			found=findPath(residualGraph.nodes.get(edge.to),target,found);
+    			found=findPath(residualGraph.nodes.get(edge.getKey()),target,found);
     		}
     		
     	}
@@ -179,21 +181,15 @@ public class Evacuation {
     	int parentNode;
     	int minFlow;
     	boolean visited=false;
-        ArrayList<Edge> edges=new ArrayList<Edge>();    	
     	
+        HashMap<Integer,Edge> edges=new HashMap<Integer,Edge>();
+        
         public Node(int nodeNumber)
         {
         	this.nodeNumber=nodeNumber;
         }
         
-        public void changeFlow(int to,int flow)
-        {
-        	for(Edge edge:edges)
-        	{
-        		if(edge.to==to)
-        			edge.flow=flow;
-        	}
-        }
+       
         
     }
     
@@ -203,17 +199,21 @@ public class Evacuation {
     	
     	public void addEdge(int from,int to,int capacity,int flow)
     	{
-    		nodes.get(from).edges.add(new Edge(to,capacity,flow));
+    		
+    		if(nodes.get(from).edges.get(to)!=null)
+    			nodes.get(from).edges.get(to).flow=nodes.get(from).edges.get(to).flow+flow;
+    		else
+    			nodes.get(from).edges.put(to, new Edge(to,capacity,flow));
     	}
 
 		public int getFlow(int parent, int target)
 		{
 			Node from=nodes.get(parent);
-			for(Edge edge:from.edges)
-			{
-				if(edge.to==target)
-					return edge.flow;
-			}
+			
+			Edge edge=from.edges.get(target);
+			
+			if(edge!=null)
+				return edge.flow;
 			
 			return 0;
 		}
@@ -224,16 +224,17 @@ public class Evacuation {
 			
 			Node fromNode=nodes.get(from);
 			
-			for(Edge edge:fromNode.edges)
+			Edge edge=fromNode.edges.get(to);
+			if(edge!=null)
 			{
-				if(edge.to==to)
-				{	flow=flow+edge.flow;
-					nodes.remove(edge);
-				
-				}
+				flow=flow+edge.flow;
+				edge.flow=flow;
+			    return;
 			}
+			
+			
 			Edge newEdge=new Edge(from,to,flow);
-			fromNode.edges.add(newEdge);
+			fromNode.edges.put(to, newEdge);
 		}
 		
     }
