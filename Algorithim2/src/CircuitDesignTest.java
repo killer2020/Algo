@@ -6,13 +6,13 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
-public class CircuitDesign {
+public class CircuitDesignTest {
     private final InputReader reader;
     private final OutputWriter writer;
     HashMap<Integer,ArrayList<Integer>> graph=new HashMap<Integer,ArrayList<Integer>>();
 	HashMap<Integer,ArrayList<Integer>> reverseGraph=new HashMap<Integer,ArrayList<Integer>>();
 
-    public CircuitDesign(InputReader reader, OutputWriter writer) {
+    public CircuitDesignTest(InputReader reader, OutputWriter writer) {
         this.reader = reader;
         this.writer = writer;
     }
@@ -20,7 +20,7 @@ public class CircuitDesign {
     public static void main(String[] args) {
         InputReader reader = new InputReader(System.in);
         OutputWriter writer = new OutputWriter(System.out);
-        new CircuitDesign(reader, writer).run();
+        new CircuitDesignTest(reader, writer).run();
         writer.writer.flush();
     }
 
@@ -94,8 +94,12 @@ public class CircuitDesign {
         	}
         	
         	return true;
-        	
-    /*        for (int mask = 0; mask < (1 << numVars); ++mask) {
+        }
+        boolean isSatisfiableOriginal(int[] result) {
+            // This solution tries all possible 2^n variable assignments.
+            // It is too slow to pass the problem.
+            // Implement a more efficient algorithm here.
+            for (int mask = 0; mask < (1 << numVars); ++mask) {
                 for (int i = 0; i < numVars; ++i) {
                     result[i] = (mask >> i) & 1;
                 }
@@ -120,8 +124,9 @@ public class CircuitDesign {
                     return true;
                 }
             }
-            return false; */
+            return false;
         }
+        
 
 		private void bfsReachable(int source, HashMap<Integer, Boolean> hasVisited, ArrayList<Integer> stronglyConnectedMembers)
 		{
@@ -180,10 +185,20 @@ public class CircuitDesign {
     }
 
     public void run() {
-        int n = reader.nextInt();
-        int m = reader.nextInt();
+       
+    	int n=5;
+    	int m=10;
+    	while(true)
+    {	n=n+5;
+        m=m+5; 
+       
 
+        System.out.println(n+" "+m);
+        
         TwoSatisfiability twoSat = new TwoSatisfiability(n, m);
+        
+      graph=new HashMap<Integer,ArrayList<Integer>>();
+      reverseGraph=new HashMap<Integer,ArrayList<Integer>>();
         
         for(int i=1;i<=n;i++)
         {
@@ -195,8 +210,20 @@ public class CircuitDesign {
         
         for (int i = 0; i < m; ++i) {
            
-        	int v1=reader.nextInt();
-        	int v2=reader.nextInt();
+        	int v1=(((int)(Math.random()*100))%n)+1;
+        	int v2=(((int)(Math.random()*100))%n)+1;
+        	
+        	int sign1=((int)(Math.random()*100))%2;
+        	if(sign1==1)
+        		v1=-v1;
+        	
+        	
+        	int sign2=((int)(Math.random()*100))%2;
+        	if(sign2==1)
+        		v2=-v2;
+        	
+        	System.out.println(v1+" "+v2);
+        	
         	twoSat.clauses[i].firstVar = v1;
             twoSat.clauses[i].secondVar = v2;
         
@@ -213,22 +240,29 @@ public class CircuitDesign {
         
 
         int result[] = new int[n];
-        if (twoSat.isSatisfiable(result)) 
-        {
-            writer.printf("SATISFIABLE\n");
-            for (int i = 1; i <= n; ++i) 
-            {
-              writer.printf("%d",result[i-1]);
-              writer.printf(" ");
-              }
-            
-        } 
-        else {
-            writer.printf("UNSATISFIABLE\n");
+        
+        boolean original=twoSat.isSatisfiableOriginal(result);
+        
+        
+        int result2[] = new int[n];
+        boolean test=twoSat.isSatisfiable(result2);
+       
+        if(original==test)
+        {	System.out.println("Ok");
+            System.out.println(original +" "+test);
         }
+        else
+        {	System.out.println("Error");
+        	System.out.println(original +" "+test);
+        	return;
+        }
+        
+        System.out.println("************************************");
     }
+    
+   }
 
-    static class InputReader {
+    private static class InputReader {
         public BufferedReader reader;
         public StringTokenizer tokenizer;
 
@@ -261,7 +295,7 @@ public class CircuitDesign {
         }
     }
 
-    static class OutputWriter {
+    private static class OutputWriter {
         public PrintWriter writer;
 
         OutputWriter(OutputStream stream) {
