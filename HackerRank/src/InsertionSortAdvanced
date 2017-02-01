@@ -1,0 +1,90 @@
+class TreeNode
+{
+	int data;
+	TreeNode parent;
+	TreeNode left;
+	TreeNode right;
+
+	public TreeNode(int data,TreeNode parent,TreeNode left,TreeNode right)
+	{
+		this.data=data;
+		this.parent=parent;
+		this.left=left;
+		this.right=right;
+		
+	}
+
+}
+
+ 
+public class Test {
+ 
+	  public static void main(String[] args) {
+	        
+	        Scanner in = new Scanner(System.in);
+	        int t = in.nextInt();
+	        
+	        for(int i=0;i<t;i++){
+	            int n = in.nextInt();
+	            int[] ar = new int[n];
+	            for(int j=0;j<n;j++){
+	                ar[j]=in.nextInt();
+	                //System.err.println(ar[j]);
+	            }
+	            long c = insertSort(ar);      
+	            System.out.println(c);
+	        }
+	}
+	    
+	    
+	    public static long insertSort(int[] ar)
+	    {
+	        long count = 0; 
+	    	
+	        TreeNode root=new TreeNode(ar[0],null,null,null);
+	        
+	        		
+	        for(int i=1;i<ar.length;i++)
+	        {
+	        	int number=ar[i];
+	        	TreeNode node=insertNodeinTree(root,number);
+	        	
+	        }
+	        		
+	        return count;
+	        
+	    }
+
+
+		private static TreeNode insertNodeinTree(TreeNode root, int number) {
+			
+			TreeNode currentNode=root;
+		    TreeNode parent=root;
+			String leftRight="left";
+		    
+			while(currentNode!=null)
+			{
+				parent=currentNode;
+				if(currentNode.data>number)
+					{currentNode=currentNode.left;
+					 leftRight="left";
+					}
+				else if(currentNode.data<=number)
+					{currentNode=currentNode.right;
+				     leftRight="right";
+					}
+				
+			}
+		
+			
+			TreeNode newNode=new TreeNode(number,parent,null,null);
+			
+			if(leftRight.equals("left"))
+				parent.left=newNode;
+			else if(leftRight.equals("right"))
+				parent.right=newNode;
+			System.out.println(newNode.parent.data+ " "+newNode.data);
+			return newNode;
+		}
+	    
+}
