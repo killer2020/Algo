@@ -55,7 +55,6 @@ public class InsertionSortAdvanced {
 	        	int number=ar[i];
 	        	int nodesToRight=insertNodeinTree(root,number);
 	        	count=count+nodesToRight;
-	        	root=adjustTree(root);
 	        }
 	        		
 	        return count;
@@ -64,40 +63,7 @@ public class InsertionSortAdvanced {
 
 
 
-		private static TreeNode adjustTree(TreeNode root)
-		{
-			if(root.childCountLeft-root.childCountRight>2)
-			{
-				TreeNode leftRight=root.left.right;
-				TreeNode left=root.left;
-				
-				
-				left.right=root;
-				root.parent=left;
-				
-				if(leftRight!=null)
-				{
-					root.left=leftRight;
-					leftRight.parent=root;
-				}
-				else
-					root.left=null;
-				
-				root=left;
-				
-				root.childCountRight=root.right.childCountRight+1;
-				if(leftRight!=null)
-					root.right.childCountLeft=root.right.left.childCountLeft+root.right.left.childCountRight+1;
-				
-			}
-			else
-			if(root.childCountRight-root.childCountLeft>2)
-			{
-				
-			}
-			
-			return root;
-		}
+		
 
 
 		private static int insertNodeinTree(TreeNode root, int number) {
