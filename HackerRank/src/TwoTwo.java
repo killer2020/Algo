@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 public class TwoTwo
 {
 	
-	
+	static TreeNode rootNode;
 	
 	static class TreeNode
 	{
@@ -44,26 +44,51 @@ public class TwoTwo
 		
 		FastScanner scanner=new FastScanner();
 		int numberOfStrings=scanner.nextInt();
-		int count=0;
-		
-		
-		
-		
-		
 		
 		
 		for(int i=0;i<numberOfStrings;i++)
 		{
 			
 			String currentString=scanner.next();
-			
+			int currentStringResult=checkCountinString(currentString);
+			System.out.println(currentStringResult);
 		}
 		
 		
 		
+	}
+
+
+
+
+
+	private static int checkCountinString(String currentString) {
 		
+		int count=0;
 		
-		System.out.println(count);
+		for(int i=0;i<currentString.length();i++)
+		{
+			String str=currentString.substring(i);
+			TreeNode currentNode=rootNode;
+			for(int j=0;j<str.length();j++)
+			{   
+				String ch=str.substring(j, j+1);
+				TreeNode child=currentNode.hasChild(ch);
+				if(child!=null)
+				{	
+					currentNode=child;
+				    if(child.isEndOfString)
+				    {count++;
+				    }
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		
+		return count;
 	}
 
 
@@ -72,15 +97,13 @@ public class TwoTwo
 
 	private static void createPowersOfTwoTrie() {
 	
-		long time=System.currentTimeMillis();
-		TreeNode rootNode=new TreeNode("$");
+		rootNode=new TreeNode("$");
 		for(int i=0;i<=800;i++)
 		{
 			String str=new DecimalFormat("#").format(Math.pow(2, i));
 			enterStringinTrie(str,rootNode);
 		}
 		
-		System.out.println("Trie created:"+(double)(System.currentTimeMillis()-time)/1000+" s");
 	}
 
 
@@ -96,10 +119,14 @@ public class TwoTwo
 			String ch=str.substring(i,i+1);
 			TreeNode child=currentNode.hasChild(ch);
 			if(child!=null)
+			{	
 				currentNode=child;
+			
+			}
 			else
 			{
 				child=new TreeNode(ch);
+				currentNode.childs.add(child);
 				currentNode=child;
 			}
 			
