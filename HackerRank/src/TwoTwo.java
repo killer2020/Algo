@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 public class TwoTwo
 {
 	
-	static String[] powersOfTwo=new String[801];
+	
 	
 	static class TreeNode
 	{
