@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class TwoTwo
+
+public class TwoTwoTest2
 {
 	
 	static TreeNode rootNode;
@@ -47,23 +48,56 @@ public class TwoTwo
 		createPowersOfTwoTrie();
 		
 		FastScanner scanner=new FastScanner();
-		int numberOfStrings=scanner.nextInt();
+		int numberOfStrings=100;
 		
 		
-		for(int i=0;i<numberOfStrings;i++)
+		
+		while(true)
 		{
+			long randm=(long)(Math.random()*100000);
 			
-			String currentString=scanner.next();
+			System.out.println("Number:"+randm);
+			String currentString=String.valueOf(randm);
 			int currentStringResult=checkCountinString(currentString);
-			System.out.println(currentStringResult);
+			
+			
+			int bruteResult=checkBrute(currentString);
+			System.out.println("Algo:"+currentStringResult);
+			System.out.println("Brute:"+bruteResult);
+			if(currentStringResult!=bruteResult)
+				{
+				 System.out.println("****Error****");
+				return;
+				
+				}
 		}
+		
 		
 		
 		
 	}
 
 
-
+	static ArrayList<String> data =new ArrayList<String>();
+	private static int checkBrute(String str)
+	{
+		int count=0;
+		String current;
+		for(int i=0;i<str.length();i++)
+		{
+			current=str.substring(i);
+			for(int j=1;j<current.length()+1;j++)
+			{
+				String s=current.substring(0,j);
+				if(data.contains(s))
+				{count++;
+				 System.out.println("Data:"+s);
+				}
+			}
+			
+		}
+		return count;
+	}
 
 
 
@@ -109,6 +143,7 @@ public class TwoTwo
 
 
 
+
 	private static void createPowersOfTwoTrie() {
 	
 		rootNode=new TreeNode("$");
@@ -117,13 +152,14 @@ public class TwoTwo
 		{
 			BigInteger answer = BigInteger.valueOf(2).pow(i);
 			String str=String.valueOf(answer);
-			//System.out.println(str);
 			enterStringinTrie(str,rootNode);
+			data.add(str);
 		}
 		
 		optimizeTrie();
 		
 	}
+
 
 
 
@@ -151,26 +187,22 @@ public class TwoTwo
 		    
 			TreeNode parentNode=currentNode.parent;
 			TreeNode parentNodeFailedNode=parentNode.failedLink;
-			
-		
-			while(parentNodeFailedNode!=rootNode)
-			{if(parentNodeFailedNode.hasChild(currentNode.data)!=null)
-			 {
+			if(parentNodeFailedNode.hasChild(currentNode.data)!=null)
+			{
 				currentNode.failedLink=parentNodeFailedNode.hasChild(currentNode.data);
-				break;
-			 }
-			 else
-			 {
-				parentNodeFailedNode=parentNodeFailedNode.failedLink;
-			 }
+			}
+			else if(rootNode.hasChild(currentNode.data)!=null)
+			{
+				currentNode.failedLink=rootNode.hasChild(currentNode.data);
+			}
+			else
+			{
+				currentNode.failedLink=rootNode;
 			}
 			
-			if(parentNodeFailedNode==rootNode)
-				currentNode.failedLink=rootNode;
-			
-			currentNode.isEndOfString=currentNode.isEndOfString+currentNode.failedLink.isEndOfString;
 			
 			
+				currentNode.isEndOfString=currentNode.isEndOfString+currentNode.failedLink.isEndOfString;
 		}
 		
 	}
