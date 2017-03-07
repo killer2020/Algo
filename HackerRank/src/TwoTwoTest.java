@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 
 
-public class TwoTwoTest2
+public class TwoTwoTest
 {
 	
 	static TreeNode rootNode;
