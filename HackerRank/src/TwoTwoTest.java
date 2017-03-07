@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 
 
-public class TwoTwoTest2
+public class TwoTwoTest
 {
 	
 	static TreeNode rootNode;
@@ -57,9 +57,9 @@ public class TwoTwoTest2
 		{
 			String currentString="";
 			
-			for(int i=0;i<4;i++)
+			for(int i=0;i<5;i++)
 			{	
-			long randm=(long)(Math.random()*1000000000);
+			long randm=(long)(Math.random()*1000);
 			BigInteger str1 = BigInteger.valueOf(randm);
 			currentString=currentString+String.valueOf(randm);
 			}
