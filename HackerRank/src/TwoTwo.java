@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +23,7 @@ public class TwoTwo
 		
 		TreeNode parent;
 		
-		int isEndOfString=0;
+		int noOfEnds=0;
 		
 		public TreeNode(String data)
 		{
@@ -80,25 +79,34 @@ public class TwoTwo
 			{   
 				String ch=str.substring(j, j+1);
 				TreeNode child=currentNode.hasChild(ch);
+				TreeNode currentNodeFailedNode=currentNode.failedLink;
 				
 				if(child!=null)
 				{	
 					currentNode=child;
-				    if(child.isEndOfString>0)
-				    {count=count+child.isEndOfString;
-				    }
+				    
 				}
 				else
 				{
+					while(true)
+					{
+						if(currentNodeFailedNode.hasChild(ch)!=null)
+							{currentNode=currentNodeFailedNode.hasChild(ch);
+							 break;
+							}
+						
+						if(currentNodeFailedNode==rootNode)
+						{
+							currentNode=rootNode;
+							break;
+						}
+						currentNodeFailedNode=currentNodeFailedNode.failedLink;
+					}
 					
-					if(currentNode==rootNode)
-						continue;
 					
-					currentNode=currentNode.failedLink;
-					
-					
-					j--;
 				}
+				
+				count=count+currentNode.noOfEnds;
 			}
 		
 		
@@ -132,44 +140,44 @@ public class TwoTwo
 	private static void optimizeTrie()
 	{
 		Queue<TreeNode> queue=new LinkedList<TreeNode>();
-		
-		
 		rootNode.failedLink=rootNode;
-		for(TreeNode node:rootNode.childs)
+		
+		for(TreeNode rootChild:rootNode.childs)
 		{
-			node.failedLink=rootNode;
-			queue.addAll(node.childs);
+			rootChild.failedLink=rootNode;
+			queue.addAll(rootChild.childs);
 		}
 		
 		while(!queue.isEmpty())
 		{
 			TreeNode currentNode=queue.poll();
-			
-			
-			
-			queue.addAll(currentNode.childs);
-		    
+
 			TreeNode parentNode=currentNode.parent;
 			TreeNode parentNodeFailedNode=parentNode.failedLink;
 			
-		
-			while(parentNodeFailedNode!=rootNode)
-			{if(parentNodeFailedNode.hasChild(currentNode.data)!=null)
-			 {
-				currentNode.failedLink=parentNodeFailedNode.hasChild(currentNode.data);
-				break;
-			 }
-			 else
-			 {
-				parentNodeFailedNode=parentNodeFailedNode.failedLink;
-			 }
+			while(true)
+			{
+				
+				if(parentNodeFailedNode.hasChild(currentNode.data)!=null)
+				{
+					currentNode.failedLink=parentNodeFailedNode.hasChild(currentNode.data);
+					break;
+				}
+				
+				if(parentNodeFailedNode==rootNode)
+				{
+					currentNode.failedLink=rootNode;
+					break;
+				}
+				
+				parentNode=parentNodeFailedNode;
+				parentNodeFailedNode=parentNode.failedLink;
 			}
+				
+		
 			
-			if(parentNodeFailedNode==rootNode)
-				currentNode.failedLink=rootNode;
-			
-			currentNode.isEndOfString=currentNode.isEndOfString+currentNode.failedLink.isEndOfString;
-			
+			currentNode.noOfEnds=currentNode.noOfEnds+currentNode.failedLink.noOfEnds;
+			queue.addAll(currentNode.childs);
 			
 		}
 		
@@ -204,7 +212,7 @@ public class TwoTwo
 			}
 			
 		}
-		currentNode.isEndOfString++;
+		currentNode.noOfEnds++;
 	}
 
 
