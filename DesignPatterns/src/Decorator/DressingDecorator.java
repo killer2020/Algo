@@ -1,0 +1,24 @@
+package Decorator;
+
+public class DressingDecorator extends SandwichDecorator
+{
+	
+	public DressingDecorator(Sandwich customSandwich)
+	{
+		super(customSandwich);
+	}
+	
+	
+	public String make()
+	{
+		return customSandwich.make()+ addDressing();
+	}
+
+
+	private String addDressing()
+	{
+		// TODO Auto-generated method stub
+		return " + mustard";
+	}
+
+}
