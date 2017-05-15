@@ -10,6 +10,15 @@ public class DecoratorSandwichDemo
 		
 		System.out.println(sandwich.make());
 		
+		
+		String str="abc";
+		
+		
+		String s=str.concat(str);
+		
+		System.out.println(str);
+		System.out.println(s);
+		
 	}
 	
 	

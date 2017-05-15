@@ -1,0 +1,9 @@
+Shouldnt be designed upfront.
+
+
+Very east to implement.
+
+
+should be desinged on badly designed code.
+
+Simplifes code usage for client.
