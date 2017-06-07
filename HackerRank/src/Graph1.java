@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Graph
+public class Graph1
 {
 	public static void main(String[] args) throws Exception {
     	Scanner scanner = new Scanner(System.in);

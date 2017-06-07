@@ -1,4 +1,3 @@
-package com.theopentutorials.ejb3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,11 +6,23 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Test
+
+public class TwoArrayProblem
 {
 
-	static LinkedList<Integer> arr1;
-	static LinkedList<Integer> arr2;
+	static class Node
+	{
+		int data;
+		Node next;
+		
+		public Node(int data,Node next)
+		{
+			this.data=data;
+			this.next=next;
+		}
+		
+	}
+	
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -21,17 +32,25 @@ public class Test
 		int queries=scanner.nextInt();
         
 		
-		arr1=new LinkedList<Integer>();
-		arr2=new LinkedList<Integer>();
+		Node root1=new Node(scanner.nextInt(),null);
+		Node prev=root1;
 		
-		for(int i=0;i<size;i++)
+		
+		for(int i=1;i<size;i++)
 		{
-			arr1.add(scanner.nextInt());
+			Node newNode=new Node(scanner.nextInt(),null);
+			prev.next=newNode;
+			prev=newNode;
 		}
 		
-		for(int i=0;i<size;i++)
+		Node root2=new Node(scanner.nextInt(),null);
+		prev=root2;
+		
+		for(int i=1;i<size;i++)
 		{
-			arr2.add(scanner.nextInt());
+			Node newNode=new Node(scanner.nextInt(),null);
+			prev.next=newNode;
+			prev=newNode;
 		}
 		
 	
@@ -75,9 +94,14 @@ public class Test
 			
 			}
 			
-			System.out.println(arr1);
-			System.out.println(arr2);
 			
+		}
+		
+		Node n1=root2;
+		for(int i=0;i<size;i++)
+		{
+			System.out.println(n1.data);
+			n1=n1.next;
 		}
 		
 	
@@ -85,59 +109,19 @@ public class Test
 	
 
 	private static void swapArraySegements(int ll, int rr) {
-		LinkedList<Integer> l1=new LinkedList<Integer>();
-		LinkedList<Integer> l2=new LinkedList<Integer>();
 		
-		
-		l1.addAll(arr1.subList(0, ll));
-		l1.addAll(arr2.subList(ll,rr+1));
-		l1.addAll(arr1.subList(rr+1,arr1.size()));
-		
-		l2.addAll(arr2.subList(0, ll));
-		l2.addAll(arr1.subList(ll,rr+1));
-		l2.addAll(arr2.subList(rr+1,arr2.size()));
-		
-		
-		
-		arr1=l1;
-		arr2=l2;
 	}
 
 
 	private static void swapSubSegements(int arrNum, int l1, int r1, int l2, int r2) {
 
-		LinkedList<Integer> newList=new LinkedList<Integer>();
-		if(arrNum==0)
-		{
-			newList.addAll(arr1.subList(0,l1));
-			newList.addAll(arr1.subList(l2,r2+1));
-			newList.addAll(arr1.subList(r1+1,l2));
-			newList.addAll(arr1.subList(r2+1,arr1.size()));
-			
-			arr1=newList;
-			
-		}
-		else
-		if(arrNum==1)
-		{
-			newList.addAll(arr2.subList(0,l1));
-			newList.addAll(arr2.subList(l2,r2+1));
-			newList.addAll(arr2.subList(r1+1,l2));
-			newList.addAll(arr2.subList(r2+1,arr1.size()));
-			
-			arr2=newList;
-		}
 		
 		
 	}
 
 
 	private static void reverseSubArray(int arrNum, int start, int end) {
-		if(arrNum==0)
-			Collections.reverse(arr1.subList(start,end));
-		else
-		if(arrNum==1)
-			Collections.reverse(arr2.subList(start,end));
+		
 		
 	}
 
