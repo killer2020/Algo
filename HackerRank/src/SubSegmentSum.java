@@ -28,20 +28,10 @@ public class SubSegmentSum {
 		
 		Node rootNode=createSegmentTree(count);
 		
-		//System.out.println(rootNode);
-		
-		
 		updateMaxArea(rootNode,0,count-1);
 		
 		System.out.println(maxArea);
-		
-//		while(true)
-//		{
-//			int a1=scanner.nextInt();
-//			int a2=scanner.nextInt();
-//			Node node=findMinNodeInRange(rootNode,a1,a2);
-//			System.out.println("Min:"+node.min+": Min Index:"+node.minIndex);
-//		}
+
 		
 	}
 
