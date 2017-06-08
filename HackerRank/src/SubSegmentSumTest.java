@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
 
-public class SubSegmentSum {
+public class SubSegmentSumTest {
 
 	
 	static int[] arr;
@@ -16,14 +17,19 @@ public class SubSegmentSum {
 	{
 		FastScanner scanner=new FastScanner();
 
-		count=scanner.nextInt();
+		while(true)
+		{
+			ArrayList<Integer> data=new ArrayList<Integer>();
+			maxArea=0;
+			count=(int) (Math.random()*100000)+1;
 		
 		arr=new int[count];
 		
 		for(int i=0;i<count;i++)
 		{
-			 int next=scanner.nextInt();
+			 int next=(int) (Math.random()*1000000)+1;
 			 arr[i]=next;
+			 data.add(next);
 		}
 		
 		Node rootNode=createSegmentTree(count);
@@ -35,17 +41,39 @@ public class SubSegmentSum {
 		
 		System.out.println(maxArea);
 		
-//		while(true)
-//		{
-//			int a1=scanner.nextInt();
-//			int a2=scanner.nextInt();
-//			Node node=findMinNodeInRange(rootNode,a1,a2);
-//			System.out.println("Min:"+node.min+": Min Index:"+node.minIndex);
-//		}
+		int bruteResult=bruteResult(data);
+		System.out.println("Result:"+maxArea+"  Brute:"+bruteResult);
+		if(maxArea!=bruteResult)
+			return;
 		
+		}
 	}
 
-
+private static int bruteResult(ArrayList<Integer> data) {
+		
+		int area=0;
+		
+		for(int i=0;i<data.size();i++)
+		{
+			int maxArea=data.get(i);
+			int minElement=data.get(i);
+			for(int j=i+1;j<data.size();j++)
+			{
+				if(data.get(j)<minElement)
+				{
+					minElement=data.get(j);
+				}
+				
+				if(minElement*(j-i+1)>maxArea)
+					maxArea=minElement*(j-i+1);
+			}
+		
+			if(maxArea>area)
+				area=maxArea;
+		}
+		
+		return area;
+	}
 
    private static void updateMaxArea(Node rootNode,int start,int end) 
     {
