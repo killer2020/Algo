@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class AbsoluteElementSums
+public class AbsoluteElementSumsTest
 {
 
 	static Integer[] arr;
@@ -16,7 +16,7 @@ public class AbsoluteElementSums
 		
 		FastScanner scanner=new FastScanner();
 		
-		long initialSum=0;
+		int initialSum=0;
 		
 		int count=scanner.nextInt();
 		
@@ -33,18 +33,20 @@ public class AbsoluteElementSums
         Collections.sort(elements);
 		
          arr= elements.toArray(new Integer[elements.size()]);
-        
+         arr2=elements.toArray(new Integer[elements.size()]);
         
         int divider=getDivider(0);
 		
-		int queries=scanner.nextInt();
+		//int queries=scanner.nextInt();
 		
 		int add=0;
 		
-		for(int i=0;i<queries;i++)
+		while(true)
 		{
-			long sum=initialSum;
-			int next=scanner.nextInt();
+			int sum=initialSum;
+			int next=(int) (Math.random()*10)-(int)(Math.random()*10);
+			System.out.println(next);
+			
 			add=add+next;
 		    
 			if(add<0)
@@ -102,7 +104,12 @@ public class AbsoluteElementSums
 			}
 			
 				
-			System.out.println(sum);
+			System.out.println("Sum:"+sum);
+			int bruteResult=bruteresult(next);
+			System.out.println("Brute:"+bruteResult);
+			
+			if(sum!=bruteResult)
+			 return;
 		}
 		
 		
@@ -110,6 +117,23 @@ public class AbsoluteElementSums
 	}
 	
 	
+
+
+    static Integer[] arr2;
+	
+	private static int bruteresult(int next) {
+		
+		int sum=0;
+		for(int i=0;i<arr2.length;i++)
+		{
+			arr2[i]=arr2[i]+next;
+			sum=sum+Math.abs(arr2[i]);
+		}
+		
+		return sum;
+	}
+
+
 
 
 
