@@ -129,7 +129,7 @@ public class AbsoluteElementSums
 		
 		int queries=scanner.nextInt();
 		
-		int add=0;
+		long add=0;
 		
 		for(int i=0;i<queries;i++)
 		{
@@ -230,10 +230,10 @@ public class AbsoluteElementSums
 
 
 
-	private static int getDivider(int element)
+	private static int getDivider(long add)
 	{
 		
-		int i=binarySearch(element,0,arr.length-1);
+		int i=binarySearch(add,0,arr.length-1);
 		return i;
 	}
 
@@ -241,17 +241,17 @@ public class AbsoluteElementSums
 
 
 
-	private static int binarySearch(int element,int start,int end)
+	private static int binarySearch(long add,int start,int end)
 	{
 		
 		
 		if(start==end || start>end)
 		{
-			if(arr[start]==element)
+			if(arr[start]==add)
 				return start;
-			if(arr[start]>element)
+			if(arr[start]>add)
 				return start;
-			if(arr[start]<element)
+			if(arr[start]<add)
 				return start+1;
 			
 		}
@@ -260,12 +260,12 @@ public class AbsoluteElementSums
 		int mid=(start+end)/2;
 		
 		
-		if(arr[mid]==element)
+		if(arr[mid]==add)
 			return mid;
-		if(arr[mid]<element)
-			return binarySearch(element,mid+1, end);
-		if(arr[mid]>element)
-			return binarySearch(element,start,mid-1);
+		if(arr[mid]<add)
+			return binarySearch(add,mid+1, end);
+		if(arr[mid]>add)
+			return binarySearch(add,start,mid-1);
 		
 		return 0;
 	}
