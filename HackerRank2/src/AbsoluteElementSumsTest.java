@@ -6,17 +6,104 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
+
+
 public class AbsoluteElementSumsTest
 {
 
 	static Integer[] arr;
+	
+	static class Node
+	{
+		
+		int l1;
+		int l2;
+		int b1;
+		int b2;
+		long sum;
+		Node left=null;
+		Node right=null;
+		boolean isLeaf=false;
+		
+		
+		public Node(int l1, int l2, int b1, int b2, long sum,boolean isLeaf) {
+			this.l1 = l1;
+			this.l2 = l2;
+			this.b1 = b1;
+			this.b2 = b2;
+			this.sum = sum;
+			this.isLeaf=isLeaf;
+		}
+		
+		public Node()
+		{
+			
+		}
+		
+		
+	}
+	
+	
+	public static Node createSumTree(int start,int end)
+	{
+		
+		if(start==end)
+			return new Node(start,start,start,start,arr[start],true);
+		
+		int mid=(start+end)/2;
+		
+		Node left=createSumTree(start,mid);
+		Node right=createSumTree(mid+1,end);
+		
+		return mergeNodes(left,right);
+		
+	}
+	
+	
+	private static Node mergeNodes(Node left, Node right) {
+		
+		Node node=new Node();
+		
+		node.l1=left.l1;
+		node.l2=left.b2;
+		node.b1=right.l1;
+		node.b2=right.b2;
+		
+		node.left=left;
+		node.right=right;
+		
+		node.sum=left.sum+right.sum;
+		
+		return node;
+	}
+
+
+	private static long getSum(Node root,int start,int end)
+	{
+		if(root.isLeaf || (root.l1==start && root.b2==end))
+			return root.sum;
+		
+		
+		if(start<=root.l2 && end<=root.l2)
+			return getSum(root.left,start,end);
+		
+		if(start>=root.b1 && end>=root.b1)
+			return getSum(root.right,start,end);
+		
+		
+		long left=getSum(root.left,start,root.l2);
+		long right=getSum(root.right,root.b1,end);
+		
+		return left+right;
+		
+	}
 	
 	public static void main(String args[]) throws Exception
 	{
 		
 		FastScanner scanner=new FastScanner();
 		
-		int initialSum=0;
+		long initialSum=0;
 		
 		int count=scanner.nextInt();
 		
@@ -31,10 +118,12 @@ public class AbsoluteElementSumsTest
 		}
 		
         Collections.sort(elements);
+        
 		
          arr= elements.toArray(new Integer[elements.size()]);
          arr2=elements.toArray(new Integer[elements.size()]);
         
+         Node root=createSumTree(0,arr.length-1);
         int divider=getDivider(0);
 		
 		//int queries=scanner.nextInt();
@@ -43,34 +132,51 @@ public class AbsoluteElementSumsTest
 		
 		while(true)
 		{
-			int sum=initialSum;
-			int next=(int) (Math.random()*10)-(int)(Math.random()*10);
+			long sum=initialSum;
+			int next=(int) (Math.random()*100)-(int)(Math.random()*100);
 			System.out.println(next);
 			
 			add=add+next;
 		    
+			System.out.println("TotalSum:"+add);
+			
 			if(add<0)
 			{
-				int index=getDivider(-add);
+               int index=getDivider(-add);
 				
 				if(index==arr.length)
 					index--;
 				if(divider==arr.length)
 				    divider--;
 				
-				int left=divider*Math.abs(add);
+				long left=divider*Math.abs(add);
 				sum=sum+left;
 				
-				for(int j=divider;j<=index;j++)
+				int start=divider+1;
+				int end=index-1;
+				
+				if(start<=end)
 				{
-                   
-					sum=sum-Math.abs(arr[j]);
-					int addition=Math.abs(arr[j]+add);
-					sum=sum+addition;
-					
+					long treeSum=getSum(root, start, end);
+					sum=sum-treeSum;
+					sum=sum+Math.abs(treeSum+(add*(end-start+1)));
 				}
 				
-				int right=(arr.length-index-1)*Math.abs(add);
+				
+					sum=sum-Math.abs(arr[divider]);
+					long addition=Math.abs(arr[divider]+add);
+					sum=sum+addition;
+					
+
+					if(index!=divider)
+					{sum=sum-Math.abs(arr[index]);
+					addition=Math.abs(arr[index]+add);
+					sum=sum+addition;
+					}
+					
+				
+				
+				long right=(arr.length-index-1)*Math.abs(add);
 				
 				sum=sum-right;
 				
@@ -78,34 +184,48 @@ public class AbsoluteElementSumsTest
 			else
 			if(add>0)
 			{
-			 int index=getDivider(-add);
-			 
-			 if(index==arr.length)
-					index--;
-				if(divider==arr.length)
-				    divider--;
-			 
-			 
-			 int left=index*Math.abs(add);
-			 sum=sum-left;
-				
-			 for(int j=index;j<=divider;j++)
-				{
-                
-					sum=sum-Math.abs(arr[j]);
-					int addition=Math.abs(arr[j]+add);
-					sum=sum+addition;
+				 int index=getDivider(-add);
+				 
+				 if(index==arr.length)
+						index--;
+					if(divider==arr.length)
+					    divider--;
+				 
+				 
+				 long left=index*Math.abs(add);
+				 sum=sum-left;
 					
-				}	
-			 
-			 
-			 int right=(arr.length-divider-1)*Math.abs(add);
-			 sum=sum+right;
+				 int start=index+1;
+				 int end=divider-1;
+				 
+				 if(start<=end)
+				 {
+					 long treeSum=getSum(root, start, end);
+					 sum=sum-Math.abs(treeSum);
+					 sum=sum+(treeSum+(add*(end-start+1)));
+				 }
+				 
+				
+	                
+						sum=sum-Math.abs(arr[divider]);
+						long addition=Math.abs(arr[divider]+add);
+						sum=sum+addition;
+						
+						if(index!=divider)
+						{sum=sum-Math.abs(arr[index]);
+						addition=Math.abs(arr[index]+add);
+						sum=sum+addition;
+						}
+						
+				 
+				 
+				 long right=(arr.length-divider-1)*Math.abs(add);
+				 sum=sum+right;
 			}
 			
 				
 			System.out.println("Sum:"+sum);
-			int bruteResult=bruteresult(next);
+			long bruteResult=bruteresult(next);
 			System.out.println("Brute:"+bruteResult);
 			
 			if(sum!=bruteResult)
@@ -121,9 +241,9 @@ public class AbsoluteElementSumsTest
 
     static Integer[] arr2;
 	
-	private static int bruteresult(int next) {
+	private static long bruteresult(int next) {
 		
-		int sum=0;
+		long sum=0;
 		for(int i=0;i<arr2.length;i++)
 		{
 			arr2[i]=arr2[i]+next;
