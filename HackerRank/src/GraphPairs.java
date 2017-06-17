@@ -2,7 +2,18 @@ import java.io.*;
 import java.util.*;
 
 
-
+ class GraphNode
+{
+	int Node;
+	ArrayList<Integer> neighbours=new ArrayList<Integer>();
+	boolean visited=false;
+	
+	public GraphNode(int node,ArrayList<Integer> neighbours)
+	{
+		this.Node=node;
+		this.neighbours=neighbours;
+	}
+}
 
 public class GraphPairs {
 	
