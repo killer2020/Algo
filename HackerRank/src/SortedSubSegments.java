@@ -8,19 +8,6 @@ import java.util.StringTokenizer;
 public class SortedSubSegments
 {
 
-	static class Node
-	{
-		int data;
-		Node left;
-		Node right;
-		
-		public Node(int data,Node right,Node left)
-		{
-			this.data=data;
-			this.right=right;
-			this.left=left;
-		}
-	}
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -39,50 +26,16 @@ public class SortedSubSegments
 			
 		}
 		
-		int prevA=size;
-		int prevB=0;
+	
 		
 		for(int i=0;i<queries;i++)
 		{
 			int a=scanner.nextInt();
 			int b=scanner.nextInt();
-			
-			if(a>=prevA && b<=prevB)
-				continue;
-			else
-			{
-				prevA=a;
-				prevB=b;
-			}
-			
-			
-			ArrayList<Integer> data=new ArrayList<Integer>();
-			
-			int prev=a;
-			boolean sorted=true;
-			for(int j=a;j<=b;j++)
-			{	
-				if(arr[j]<arr[prev])
-					sorted=false;
-					
-				prev=j;
-				data.add(arr[j]);
-			
-			}
-			
-			if(!sorted)
-			{Collections.sort(data);
-			
-			int ii=0;
-			for(int j=a;j<=b;j++)
-			{
-				arr[j]=data.get(ii);
-				ii++;
-			}
-			}
+		
+		
 		}
 		
-		System.out.println(arr[index]);
 		
 	}
 	

@@ -21,7 +21,7 @@ public class SubSegmentSumTest {
 		{
 			ArrayList<Integer> data=new ArrayList<Integer>();
 			maxArea=0;
-			count=(int) (Math.random()*100000)+1;
+			count=(int) (Math.random()*10000)+1;
 		
 		arr=new int[count];
 		
@@ -39,7 +39,7 @@ public class SubSegmentSumTest {
 		
 		updateMaxArea(rootNode,0,count-1);
 		
-		System.out.println(maxArea);
+		//System.out.println(maxArea);
 		
 		int bruteResult=bruteResult(data);
 		System.out.println("Result:"+maxArea+"  Brute:"+bruteResult);
