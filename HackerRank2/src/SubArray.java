@@ -14,6 +14,7 @@ public class SubArray
 	{
 		
 		long data;
+		boolean isReduntant=false;
 		
 		public Node(long data)
 		{
@@ -84,12 +85,28 @@ public class SubArray
 			
 			Collections.sort(sortedData);
 			
-			long required=mod-1;
 			
-			long maxInSegment=findNumberlessThan(required,0,arr.length-1);
+			long maxInSegment=sortedData.get(arr.length-1).data;
 			
 			if(maxInSegment>max)
 				max=maxInSegment;
+			
+			
+			for(int index=1;index<sortedData.size();index++)
+			{
+				
+				long toSubtract=prefixSum[index].data;
+				
+				long maxAvailaible=getMax(sortedData);
+				
+				maxInSegment=subtractWithMod(maxAvailaible,toSubtract,mod);
+				
+				prefixSum[index].isReduntant=true;
+				
+				if(maxInSegment>max)
+					max=maxInSegment;
+			}
+			
 			
 			System.out.println(max);
 		}
@@ -106,6 +123,43 @@ public class SubArray
 	
 	
 	
+
+	private static long subtractWithMod(long maxAvailaible, long toSubtract, long mod)
+	{
+		if(maxAvailaible>=toSubtract)
+			return maxAvailaible-toSubtract;
+		
+		
+		
+		return mod-(toSubtract-maxAvailaible);
+	}
+
+
+
+
+
+
+
+
+
+	private static long getMax(ArrayList<Node> sortedData)
+	{
+		for(int i=sortedData.size()-1;i>0;i--)
+		{
+			if(!sortedData.get(i).isReduntant)
+				return sortedData.get(i).data;
+		}
+		
+		return 0;
+	}
+
+
+
+
+
+
+
+
 
 	private static long findNumberlessThan(Long data,int start,int end)
 	{

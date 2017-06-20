@@ -14,6 +14,7 @@ public class SubArrayTest
 	{
 		
 		long data;
+		boolean isReduntant=false;
 		
 		public Node(long data)
 		{
@@ -47,8 +48,8 @@ public class SubArrayTest
 		while(true)
 		{
 			
-			int size=(int)( Math.random()*1000)+1;
-			long mod=(long) (Math.random()*100)+1;
+			int size=(int) (Math.random()*10)+1;
+			long mod=(long) (Math.random()*10)+1;
 			
 			long max=0;
 			
@@ -62,10 +63,11 @@ public class SubArrayTest
 			for(int j=0;j<size;j++)
 			{
 				
-			   arr[j]=((long) (Math.random()*100)+1)%mod;
-			   str=str+arr[j]+" ";
-				
+			   arr[j]=((long) (Math.random()*10)+1)%mod;	
+				str=str+arr[j]+" ";
 			}
+			
+			arr2=arr;
 			
 			prefixSum[0]=new Node(arr[0]);
 			
@@ -85,28 +87,39 @@ public class SubArrayTest
 			
 			Collections.sort(sortedData);
 			
-            long required=mod-1;
 			
-			long maxInSegment=findNumberlessThan(required,0,arr.length-1);
+			long maxInSegment=sortedData.get(arr.length-1).data;
 			
 			if(maxInSegment>max)
 				max=maxInSegment;
 			
 			
-			long bruteResult=calcBrute(arr,mod);
+			for(int index=1;index<sortedData.size();index++)
+			{
+				
+				long toSubtract=prefixSum[index].data;
+				
+				long maxAvailaible=getMax(sortedData);
+				
+				maxInSegment=subtractWithMod(maxAvailaible,toSubtract,mod);
+				
+				prefixSum[index].isReduntant=true;
+				
+				if(maxInSegment>max)
+					max=maxInSegment;
+			}
+			
 			
 			System.out.println(str);
 			System.out.println("Mod:"+mod);
-			
 			System.out.println("Max:"+max);
-			System.out.println("Brute:"+bruteResult);
 			
-			System.out.println();
-			System.out.println();
+			long bruteResult=calcBruteResult(mod,size);
+			
+			System.out.println("Brute:"+bruteResult);
 			
 			if(max!=bruteResult)
 				return;
-			
 		}
 		
 		
@@ -114,35 +127,67 @@ public class SubArrayTest
 		
 	}
 
-
-	
-	
-	
-	
-	
-	
-
-	private static long calcBrute(long[] arr,long mod) {
+    static long[] arr2;
+	private static long calcBruteResult(long mod,int size)
+	{
+        long max=0;
 		
-		
-		long max=0;
-		
-		for(int i=0;i<arr.length;i++)
-		{
-			long sum=0;
-			for(int j=0;j<=i;j++)
-			{
-				sum=sum+arr[j];
-			}
-			
-			sum=sum%mod;
-			
-			if(sum>max)
-				max=sum;
-		}
-		
+	    for(int i=0;i<size;i++)
+	    {
+	    	
+	    	for(int j=i;j<size;j++)
+	    	{
+	    		long sum=0;
+	    		
+	    		for(int k=i;k<=j;k++)
+	    		{
+	    			sum=sum+arr2[k];
+	    		}
+	    	
+	    		sum=sum%mod;
+	    		if(sum>max)
+	    			max=sum;
+	    	}
+	    	
+	    	
+	    }
 		
 		return max;
+	}
+
+	
+	
+	
+	
+	
+
+	private static long subtractWithMod(long maxAvailaible, long toSubtract, long mod)
+	{
+		if(maxAvailaible>=toSubtract)
+			return maxAvailaible-toSubtract;
+		
+		
+		
+		return mod-(toSubtract-maxAvailaible);
+	}
+
+
+
+
+
+
+
+
+
+	private static long getMax(ArrayList<Node> sortedData)
+	{
+		for(int i=sortedData.size()-1;i>0;i--)
+		{
+			if(!sortedData.get(i).isReduntant)
+				return sortedData.get(i).data;
+		}
+		
+		return 0;
 	}
 
 
