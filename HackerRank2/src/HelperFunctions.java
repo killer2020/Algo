@@ -7,7 +7,6 @@ public class HelperFunctions {
 	
 	private static Node treeRoot=null;
 	
-	private static Node maxDataNode=null;
 	
 	private static class Node implements Comparable<Node>
 	{
@@ -50,7 +49,6 @@ public class HelperFunctions {
 		{
 			treeRoot=node;
 			node.isRoot=true;
-			maxDataNode=node;
 			return;
 		}
 		
@@ -76,10 +74,6 @@ public class HelperFunctions {
 			{
 				rootNode.right=node;
 				node.parent=rootNode;
-				if(rootNode==maxDataNode)
-				{
-					maxDataNode=node;
-				}
 				return;
 			}
 			else
@@ -109,9 +103,119 @@ public class HelperFunctions {
 			return;
 		}
 		
+		if(hasBothChild(node))
+		{
+			removeBothChildNode(node);
+			return;
+			
+		}
+		
 	}
 	
 	
+	private static void removeBothChildNode(Node node) 
+	{
+		
+	    if(node.isRoot)
+	    {
+	    	Node left=node.left;
+	    	if(left.right==null)
+	    	{
+	    		left.right=node.right;
+	    		node.right.parent=left;
+	    		
+	    		left.parent=null;
+	    		left.isRoot=true;
+	    		treeRoot=left;
+	    	}
+	    	else
+	    	{
+	    		
+	    		Node rightMost=node.left.right;
+	    		while(rightMost.right!=null)
+	    			rightMost=rightMost.right;
+	    		
+	    		rightMost.left.parent=rightMost.parent;
+	    		rightMost.parent.right=rightMost.left;
+	    		
+	    		
+	    		rightMost.right=node.right;
+	    		node.right.parent=rightMost;
+	    		
+	    		rightMost.left=node.left;
+	    		node.left.parent=rightMost;
+	    		
+	    		rightMost.parent=null;
+	    		rightMost.isRoot=true;
+	    		treeRoot=rightMost;
+	    	}
+	    	
+	    }
+	    else
+	    {
+	    	
+	    	
+	    	Node left=node.left;
+	    	if(left.right==null)
+	    	{
+	    		left.right=node.right;
+	    		node.right.parent=left;
+	    		
+	    		if(isNodeRightChild(node))
+	    		{
+	    			left.parent=node.parent;
+	    			node.parent.right=left;
+	    		}
+	    		else
+	    		{
+	    			left.parent=node.parent;
+	    			node.parent.left=left;
+	    		}
+	    	}
+	    	else
+	    	{
+	    		
+	    		Node rightMost=node.left.right;
+	    		while(rightMost.right!=null)
+	    			rightMost=rightMost.right;
+	    		
+	    		rightMost.left.parent=rightMost.parent;
+	    		rightMost.parent.right=rightMost.left;
+	    		
+	    		
+	    		rightMost.right=node.right;
+	    		node.right.parent=rightMost;
+	    		
+	    		rightMost.left=node.left;
+	    		node.left.parent=rightMost;
+	    		
+	    		if(isNodeRightChild(node))
+	    		{
+	    			rightMost.parent=node.parent;
+	    			node.parent.right=rightMost;
+	    		}
+	    		else
+	    		{
+	    			rightMost.parent=node.parent;
+	    			node.parent.left=rightMost;
+	    		}
+	    	}
+	    	
+	    }
+		
+		
+	}
+
+
+	private static boolean hasBothChild(Node node) {
+		
+		if(node.left!=null && node.right!=null)
+			return true;
+		
+		return false;
+	}
+
+
 	private static void removeLeaf(Node node) {
 		if(node.isRoot)
 		{	treeRoot=null;
@@ -249,7 +353,7 @@ public class HelperFunctions {
 		Node parent=rootNode.parent;
 
 		if(rootNode==treeRoot)
-		   return maxDataNode.data;
+		   return maxData(treeRoot);
 		
 		if(isNodeRightChild(rootNode))
 		{
@@ -262,6 +366,14 @@ public class HelperFunctions {
 		}
 	}
 
+	
+	private static long maxData(Node rootNode)
+	{
+		while(rootNode.right!=null)
+			rootNode=rootNode.right;
+		
+		return rootNode.data;
+	}
 
 	private static boolean isNodeRightChild(Node node) {
 		
@@ -277,18 +389,30 @@ public class HelperFunctions {
 	{
 		
 		ArrayList<Long> arr;
+        ArrayList<Node> nodes;
+		
 		
 		while(true)
 		{
-			int size=(int) (Math.random()*10)+1;
+			int size=(int) (Math.random()*10)+5;
 			arr=new ArrayList<Long>();
+			nodes=new ArrayList<Node>();
 			treeRoot=null;
 			for(int i=0;i<size;i++)
 			{
 				long next=(long) (Math.random()*10)+1;
-				addNode(new Node(next), treeRoot);
+				Node nextNode=new Node(next);
+				addNode(nextNode, treeRoot);
 				arr.add(next);
+				nodes.add(nextNode);
 			}
+
+			
+            System.out.println("Before:"+arr);			
+			Node getNode=nodes.get(nodes.size()-1);
+			removeNode(getNode);
+			arr.remove(getNode.data);
+			 System.out.println("After: "+arr);	
 			
 			long find=(long) (Math.random()*10)+1;
 			
