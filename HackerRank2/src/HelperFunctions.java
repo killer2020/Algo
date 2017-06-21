@@ -3,6 +3,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import sun.org.mozilla.javascript.internal.Node;
+
 public class HelperFunctions {
 	
 	private static Node treeRoot=null;
@@ -135,7 +137,9 @@ public class HelperFunctions {
 	    		while(rightMost.right!=null)
 	    			rightMost=rightMost.right;
 	    		
+	    		if(rightMost.left!=null)
 	    		rightMost.left.parent=rightMost.parent;
+	    		
 	    		rightMost.parent.right=rightMost.left;
 	    		
 	    		
@@ -179,7 +183,9 @@ public class HelperFunctions {
 	    		while(rightMost.right!=null)
 	    			rightMost=rightMost.right;
 	    		
+	    		if(rightMost.left!=null)
 	    		rightMost.left.parent=rightMost.parent;
+	    		
 	    		rightMost.parent.right=rightMost.left;
 	    		
 	    		
@@ -409,10 +415,14 @@ public class HelperFunctions {
 
 			
             System.out.println("Before:"+arr);			
-			Node getNode=nodes.get(nodes.size()-1);
+			
+            for(int i=0;i<4;i++)
+            {Node getNode=nodes.get(i);
 			removeNode(getNode);
 			arr.remove(getNode.data);
-			 System.out.println("After: "+arr);	
+            }
+			
+			System.out.println("After: "+arr);	
 			
 			long find=(long) (Math.random()*10)+1;
 			
