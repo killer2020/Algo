@@ -10,12 +10,21 @@ public class RepKSums
 {
 	
 	private static List<Long> sumList;
+	private static List<Long> elements=new ArrayList<Long>();
 	
 	public static void main(String args[]) throws Exception
 	{
 		FastScanner scanner=new FastScanner();
 		
-		int numberOfTerms=scanner.nextInt();
+		int noOfTests=scanner.nextInt();
+		
+		for(int nn=0;nn<noOfTests;nn++)
+		
+		{
+			sumList=new ArrayList<Long>();
+			elements=new ArrayList<Long>();
+			
+			int numberOfTerms=scanner.nextInt();
 		
 		int k=scanner.nextInt();
 		
@@ -45,7 +54,7 @@ public class RepKSums
        for(int i=0;i<numberOfTerms;i++)
     	   noOfSumTerms=noOfSumTerms+arr[k-1][i];
        
-       System.out.println("No. Of Terms:"+noOfSumTerms);
+      // System.out.println("No. Of Terms:"+noOfSumTerms);
        
        
        sumList=new ArrayList<Long>();
@@ -65,15 +74,20 @@ public class RepKSums
 
        sumOfN=(sumOfN*numberOfTerms)/(noOfSumTerms*k);
        
-       System.out.println("Sum Of Terms:"+sumOfN);
+      // System.out.println("Sum Of Terms:"+sumOfN);
        
        findAndDeleteKSums(numberOfTerms,k);
        
        
-       System.out.println(elements);
+       String str="";
+       for(long next:elements)
+    	   str=str+next+" ";
+    	   
+    	   System.out.println(str);
+		}
 	}
 	
-	private static List<Long> elements=new ArrayList<Long>();
+	
 	
 	
 	
@@ -92,7 +106,7 @@ public class RepKSums
 		 long nextElement=nextSum-(firstElement*(k-1));
 		 elements.add(nextElement);
 		 
-		
+		 if(k>1)
 		 createKSums(nextElement,k-1,0);
 		}
 		
