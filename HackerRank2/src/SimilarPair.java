@@ -31,6 +31,8 @@ public class SimilarPair
     }
 	
 	
+    private static Node[] nodes;
+    
 	public static void main(String[] args) throws Exception
 	{
 
@@ -44,7 +46,7 @@ public class SimilarPair
 		
 		int[] arr=new int[n+1];
 		
-		Node[] nodes=new Node[n];
+		nodes=new Node[n];
 		
 		for(int i=0;i<n;i++)
 		{
@@ -72,14 +74,51 @@ public class SimilarPair
 				
 		}
 		
+		dfs(rootNode,k);
 		
 		
-		System.out.println(rootNode);
+	}
+	
+	
+	public static void dfs(int nodeNum,int k)
+	{
+		
+		checkSimilarPair(nodeNum,k);
+		
+		add(nodeNum);
+		
+		for(int child:nodes[nodeNum].childs)
+		{
+			dfs(child,k);
+			subtract(nodeNum);
+			
+		}
 	}
 	
 	
 	
-	
+	private static void checkSimilarPair(int nodeNum, int k)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void subtract(int nodeNum)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void add(int nodeNum)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 	private static class FastScanner
 	{
 		private BufferedReader reader;
