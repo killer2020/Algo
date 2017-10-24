@@ -31,7 +31,12 @@ public class SimilarPair
     }
 	
 	
+    
     private static Node[] nodes;
+    
+    private static int[] sum;
+    
+    private static long similarPairs=0;
     
 	public static void main(String[] args) throws Exception
 	{
@@ -44,11 +49,11 @@ public class SimilarPair
 		int k=scanner.nextInt();
 		
 		
-		int[] arr=new int[n+1];
+		sum=new int[n+1];
 		
-		nodes=new Node[n];
+		nodes=new Node[n+1];
 		
-		for(int i=0;i<n;i++)
+		for(int i=0;i<n+1;i++)
 		{
 			nodes[i]=new Node();
 		}
@@ -56,8 +61,8 @@ public class SimilarPair
 		
 		for(int i=0;i<n-1;i++)
 		{
-			int parent=scanner.nextInt()-1;
-			int child=scanner.nextInt()-1;
+			int parent=scanner.nextInt();
+			int child=scanner.nextInt();
 			
 			nodes[parent].addChild(child);
 			nodes[child].addParent(parent);
@@ -67,7 +72,7 @@ public class SimilarPair
 		
 		int rootNode=0;
 		
-		for(int i=0;i<n;i++)
+		for(int i=1;i<(n+1);i++)
 		{
 			if(nodes[i].isRoot)
 				rootNode=i;
@@ -77,6 +82,8 @@ public class SimilarPair
 		dfs(rootNode,k);
 		
 		
+		
+		System.out.println(similarPairs);
 	}
 	
 	
@@ -89,37 +96,63 @@ public class SimilarPair
 		
 		for(int child:nodes[nodeNum].childs)
 		{
+			
 			dfs(child,k);
-			subtract(nodeNum);
+			
 			
 		}
+		subtract(nodeNum);
 	}
 	
 	
 	
 	private static void checkSimilarPair(int nodeNum, int k)
 	{
-		// TODO Auto-generated method stub
+		int start=nodeNum-k;
+		if(start<0)
+			start=0;
 		
+		start=start-1;
+		
+		int end=nodeNum+k;
+		if(end>sum.length-1)
+			end=sum.length-1;
+		
+		
+		
+		int sum1=0;
+		for(; start > 0; start -= start&-start)
+	         sum1 += sum[start];
+		
+		
+		int sum2=0;
+		for(; end > 0; end -= end&-end)
+        sum2 += sum[end];
+		
+		
+		int answer=sum2-sum1;
+		similarPairs=similarPairs+answer;
 	}
 
 
 	private static void subtract(int nodeNum)
 	{
-		// TODO Auto-generated method stub
+		for(;nodeNum<sum.length;nodeNum+= nodeNum&(-nodeNum))
+			sum[nodeNum]+=(-1);
 		
 	}
 
 
 	private static void add(int nodeNum)
 	{
-		// TODO Auto-generated method stub
+		for(;nodeNum<sum.length;nodeNum+= nodeNum&(-nodeNum))
+			sum[nodeNum]+=1;
 		
 	}
 
 
 
-	private static class FastScanner
+	 static class FastScanner
 	{
 		private BufferedReader reader;
 		private StringTokenizer tokenizer;
