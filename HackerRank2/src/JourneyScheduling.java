@@ -59,20 +59,30 @@ public class JourneyScheduling
 			matrix[b][a]=1;
 		}
 		
-		
-		for(int i=1;i<=numOfNodes;i++)
+		boolean changed = true;
+		int start=0;
+		while(changed==true)
 		{
+			
+		 changed =false;
+		 start++;
+		 
+		 for(int i=1;i<=numOfNodes;i++)
+		 {
 			
 			for(int j=1;j<=numOfNodes;j++)
 			{
 				
-				if(matrix[i][j]==1)
+				if(matrix[i][j]==start)
 				{
 					for(int k=1;k<=numOfNodes;k++)
 					{
 						if(matrix[j][k]==1 && k!=i)
-						{
-							matrix[i][k]=2;
+						{  
+							if(matrix[i][k]==0)
+							{matrix[i][k]=start+1;
+							 changed=true;
+							} 
 						}
 					}
 				}
@@ -80,7 +90,9 @@ public class JourneyScheduling
 			}
 			
 		}
-
+		
+		}
+		
 		for(int i=1;i<=numOfNodes;i++)
 		{
 			
@@ -91,9 +103,9 @@ public class JourneyScheduling
 			System.out.println();
 		}
 		
+	
+
 	}
-
-
 	
 	 static class FastScanner
 		{
