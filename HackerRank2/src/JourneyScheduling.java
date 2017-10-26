@@ -144,16 +144,11 @@ public class JourneyScheduling
 		long ans=0;
 		for(long j=0;j<jumps;j++)
 		{
+			
 			int nextNode=farthestNeighbours[startNode].poll();
 			
-			if(visited[nextNode]==true)
-			{
-				long newJump=jumps/j;
-				j=j*newJump;
-				ans=ans*newJump;
-				visited[nextNode]=false;
-			}
 			
+		    
 			ans=ans+matrix[startNode][nextNode];
 			farthestNeighbours[startNode].add(nextNode);
 			startNode=nextNode;
