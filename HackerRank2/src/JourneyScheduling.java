@@ -23,6 +23,7 @@ public class JourneyScheduling
 	
 	private static Node[] nodes;
 	private static ArrayList<Integer>[] farthestNeighbours;
+	private static ArrayList<Integer>[] edge_1;
 	
 	private static int[][] matrix;
 	
@@ -43,9 +44,14 @@ public class JourneyScheduling
 		nodes= new Node[numOfNodes+1];
 		matrix=new int[numOfNodes+1][numOfNodes+1];
 		
+		farthestNeighbours=new ArrayList[numOfNodes+1];
+		edge_1=new ArrayList[numOfNodes+1];
+		
 		for(int i=0;i<=numOfNodes;i++)
 		{
 			nodes[i]=new Node();
+			farthestNeighbours[i]=new ArrayList<Integer>();
+			edge_1[i]=new ArrayList<Integer>();
 		}
 		
 		for(int i=0;i<numOfNodes-1;i++)
@@ -57,6 +63,11 @@ public class JourneyScheduling
 			
 			matrix[a][b]=1;
 			matrix[b][a]=1;
+			farthestNeighbours[a].add(b);
+			farthestNeighbours[b].add(a);
+			
+			edge_1[a].add(b);
+			edge_1[b].add(a);
 		}
 		
 		boolean changed = true;
@@ -70,25 +81,26 @@ public class JourneyScheduling
 		 for(int i=1;i<=numOfNodes;i++)
 		 {
 			
-			for(int j=1;j<=numOfNodes;j++)
+			 ArrayList<Integer> temp=new ArrayList<Integer>();
+			 
+			for(int edge:farthestNeighbours[i])
 			{
 				
-				if(matrix[i][j]==start)
-				{
-					for(int k=1;k<=numOfNodes;k++)
+					for(int edge2:edge_1[edge])
 					{
-						if(matrix[j][k]==1 && k!=i)
-						{  
-							if(matrix[i][k]==0)
-							{matrix[i][k]=start+1;
+						
+							if(matrix[i][edge2]==0 && i!=edge2)
+							{matrix[i][edge2]=start+1;
 							 changed=true;
+							 temp.add(edge2);
 							} 
-						}
+						
 					}
-				}
+				
 				
 			}
 			
+			farthestNeighbours[i]=temp;
 		}
 		
 		}
