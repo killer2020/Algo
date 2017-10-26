@@ -41,7 +41,7 @@ public class JourneyScheduling
 		FastScanner scanner=new FastScanner();
 		
 		int numOfNodes=scanner.nextInt();
-		int numOfTests=scanner.nextInt();
+		long numOfTests=scanner.nextLong();
 		
 		nodes= new Node[numOfNodes+1];
 		matrix=new int[numOfNodes+1][numOfNodes+1];
@@ -135,18 +135,29 @@ public class JourneyScheduling
 	*/
 		
 		
-	for(int i=0;i<numOfTests;i++)
+	for(long i=0;i<numOfTests;i++)
 	{
+		
+		boolean[] visited=new boolean[numOfNodes+1];
 		int startNode=scanner.nextInt();
-		int jumps=scanner.nextInt();
-		int ans=0;
-		for(int j=0;j<jumps;j++)
+		long jumps=scanner.nextLong();
+		long ans=0;
+		for(long j=0;j<jumps;j++)
 		{
 			int nextNode=farthestNeighbours[startNode].poll();
+			
+			if(visited[nextNode]==true)
+			{
+				long newJump=jumps/j;
+				j=j*newJump;
+				ans=ans*newJump;
+				visited[nextNode]=false;
+			}
+			
 			ans=ans+matrix[startNode][nextNode];
 			farthestNeighbours[startNode].add(nextNode);
 			startNode=nextNode;
-			
+			visited[nextNode]=true;
 		}
 		
 		System.out.println(ans);
